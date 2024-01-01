@@ -63,12 +63,17 @@
                 {# links #}
                 <div class="hidden md:flex space-x-6 text-lg">
                     <p>Logged as:
-						<a href="#">John Smith</a>
+						<a class="hover:text-stone-500" href="/">John Smith</a>
 					</p>
-                    <a href="{{ path('posts.new') }}">
+                    <form method="POST" action="/">
+						<button type="submit" class="tracking-widest hover:text-stone-500">
+							Logout
+						</button>
+					</form>
+                    <a href="{{ path('posts.new') }}" class="inline font-bold text-sm px-6 py-2 text-white rounded-full bg-red-500 hover:bg-red-600">
 						New blog post</a>
-                    <a href="/">Login</a>
-                    <a href="/">Register</a>
+                    <a class="tracking-widest hover:text-stone-500" href="/">Login</a>
+                    <a class="tracking-widest hover:text-stone-500" href="/">Register</a>
                 </div>
 
                 {# hamburger icon #}
@@ -105,8 +110,4 @@
         </div>
 	</body>
 </html>
-
-
-
-
 
