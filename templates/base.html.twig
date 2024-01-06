@@ -43,7 +43,7 @@
 					</svg>
 
 					<div class="text-3xl hidden md:block tracking-tight text-gray-600 font-medium ml-2">
-						<a href="#">SymfonyMicroBlog</a>
+						<a href="/">SymfonyMicroBlog</a>
 					</div>
 
 					<div class="ml-4">
@@ -66,7 +66,7 @@
 				<div class="space-x-6 hidden md:flex text-lg">
 
 					<p>Logged as:
-						<a class="hover:text-stone-500" href="/">John Smith</a>
+						<a class="hover:text-stone-500" href="/dashboard">John Smith</a>
 					</p>
 					<form method="POST" action="/">
 						<button type="submit" class="tracking-widest hover:text-stone-500">
@@ -108,14 +108,7 @@
 				</div>
 			</div>
 
-			{# latest posts #}
-			<div class="my-14">
-				<h1 class="text-6xl tracking-tighter font-bold mb-6">Latest posts
-				</h1>
-				<p class="mb-8 text-gray-500">A blog created with Symfony and Tailwind CSS
-				</p>
-				<hr/>
-			</div>
+			
 
 			{% block body %}{% endblock %}
 
@@ -126,4 +119,3 @@
 
 		</div>
 	</body>
-
