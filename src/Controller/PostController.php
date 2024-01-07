@@ -5,18 +5,36 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Entity\Post;
+use Doctrine\Persistence\ManagerRegistry;
 
 class PostController extends AbstractController
 {
     #[Route('/{_locale?}', methods: ['GET'], name: 'posts.index')]
-    public function index(): Response
+    public function index(ManagerRegistry $doctrine): Response
     {
+        // $post = $doctrine->getRepository(Post::class)->find(2); // findAll()
+        // // $doctrine->getManager()->remove($post);
+        // // $doctrine->getManager()->flush();
+        // $post->setTitle('New blog title!');
+        // $doctrine->getManager()->flush();
+        // return new Response('Check out this great product: ' . $post->getTitle());
         return $this->render('post/index.html.twig');
     }
 
     #[Route('/post/new', methods: ['GET', 'POST'], name: 'posts.new')]
-    public function new(): Response
+    public function new(ManagerRegistry $doctrine): Response
     {
+        // $entityManager = $doctrine->getManager();
+        // $post = new Post();
+        // $post->setTitle('Title');
+        // $post->setContent('Post content');
+        // $post->setCreatedAt(new \DateTimeImmutable());
+        // //tell Doctrine you want to (eventually) save the Product (no queries yet)
+        // $entityManager->persist($post);
+        // //actually executes the queries (i.e. the INSERT query)
+        // $entityManager->flush();
+        // return new Response('Saved new post with id '.$post->getId());
         return $this->render('post/new.html.twig');
     }
 
