@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Post;
 use App\Form\PostType;
+use Symfony\Component\HttpFoundation\Request;
 
 #[Route('/', requirements: ['_locale' => 'en|pl'])]
 class PostController extends AbstractController
@@ -18,13 +19,24 @@ class PostController extends AbstractController
     }
 
     #[Route('/{_locale}/post/new', methods: ['GET', 'POST'], name: 'posts.new')]
-    public function new(): Response
+    public function new(Request $request): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $post = new Post();
-        $post->setTitle('Write a blog post');
-        $post->setContent('Post content');
+        // $post->setTitle('Write a blog post');
+        // $post->setContent('Post content');
         $form = $this->createForm(PostType::class, $post);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // $form->getData() holds the submitted values
+            // but, the original `$task` variable has also been updated
+            $post = $form->getData();
+
+            // ... perform some action, such as saving the task to the database
+
+            return $this->redirectToRoute('posts.index');
+        }
         return $this->render('post/new.html.twig', [
             'form' => $form,
         ]);
