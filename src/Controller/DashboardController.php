@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 use App\Entity\Image;
+use App\Form\ChangePasswordFormType;
 use App\Form\ImageFormType;
 use App\Form\UserFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,6 +23,7 @@ class DashboardController extends AbstractController
     #[Route('/dashboard/profile', name: 'app_profile')]
     public function profile(Request $request): Response
     {
+        // change image
         $image = new Image();
         $imageForm = $this->createForm(ImageFormType::class, $image);
         $imageForm->handleRequest($request);
@@ -30,6 +32,7 @@ class DashboardController extends AbstractController
             return $this->redirectToRoute('app_profile');
         }
 
+        // change user email, name
         $user = $this->getUser();
         $userForm = $this->createForm(UserFormType::class, $user);
         $userForm->handleRequest($request);
@@ -39,9 +42,18 @@ class DashboardController extends AbstractController
             return $this->redirectToRoute('app_profile');
         }
 
+        $passwordForm = $this->createForm(ChangePasswordFormType::class, $user);
+        $passwordForm->handleRequest($request);
+
+        if ($passwordForm->isSubmitted() && $passwordForm->isValid()) {
+            $user = $passwordForm->getData();
+            return $this->redirectToRoute('app_profile');
+        }
+
         return $this->render('dashboard/edit.html.twig', [
             'imageForm' => $imageForm,
-            'userForm' => $userForm
+            'userForm' => $userForm,
+            'passwordForm' => $passwordForm,
         ]);
     }
 }
