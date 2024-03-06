@@ -3,6 +3,7 @@
 namespace App\Controller;
 use App\Entity\Image;
 use App\Form\ImageFormType;
+use App\Form\UserFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -28,8 +29,19 @@ class DashboardController extends AbstractController
             $image = $imageForm->getData();
             return $this->redirectToRoute('app_profile');
         }
+
+        $user = $this->getUser();
+        $userForm = $this->createForm(UserFormType::class, $user);
+        $userForm->handleRequest($request);
+
+        if ($userForm->isSubmitted() && $userForm->isValid()) {
+            $user = $userForm->getData();
+            return $this->redirectToRoute('app_profile');
+        }
+
         return $this->render('dashboard/edit.html.twig', [
             'imageForm' => $imageForm,
+            'userForm' => $userForm
         ]);
     }
 }
