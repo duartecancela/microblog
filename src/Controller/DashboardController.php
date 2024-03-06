@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 use App\Entity\Image;
+use App\Form\DeleteAccountFormType;
 use App\Form\ChangePasswordFormType;
 use App\Form\ImageFormType;
 use App\Form\UserFormType;
@@ -42,6 +43,7 @@ class DashboardController extends AbstractController
             return $this->redirectToRoute('app_profile');
         }
 
+        // change password
         $passwordForm = $this->createForm(ChangePasswordFormType::class, $user);
         $passwordForm->handleRequest($request);
 
@@ -50,10 +52,20 @@ class DashboardController extends AbstractController
             return $this->redirectToRoute('app_profile');
         }
 
+        // delete account
+        $deleteAccountForm = $this->createForm(DeleteAccountFormType::class, $user);
+        $deleteAccountForm->handleRequest($request);
+        
+        if ($deleteAccountForm->isSubmitted() && $deleteAccountForm->isValid()) {
+            $user = $deleteAccountForm->getData();
+            return $this->redirectToRoute('app_profile');
+        }
+
         return $this->render('dashboard/edit.html.twig', [
             'imageForm' => $imageForm,
             'userForm' => $userForm,
             'passwordForm' => $passwordForm,
+            'deleteAccountForm' => $deleteAccountForm,
         ]);
     }
 }
