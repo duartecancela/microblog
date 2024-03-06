@@ -1,10 +1,12 @@
 <?php
 
 namespace App\Controller;
-
+use App\Entity\Image;
+use App\Form\ImageFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 class DashboardController extends AbstractController
 {
@@ -17,10 +19,17 @@ class DashboardController extends AbstractController
     }
 
     #[Route('/dashboard/profile', name: 'app_profile')]
-    public function profile(): Response
+    public function profile(Request $request): Response
     {
+        $image = new Image();
+        $imageForm = $this->createForm(ImageFormType::class, $image);
+        $imageForm->handleRequest($request);
+        if ($imageForm->isSubmitted() && $imageForm->isValid()) {
+            $image = $imageForm->getData();
+            return $this->redirectToRoute('app_profile');
+        }
         return $this->render('dashboard/edit.html.twig', [
-            'controller_name' => 'DashboardController',
+            'imageForm' => $imageForm,
         ]);
     }
 }
