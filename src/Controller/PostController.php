@@ -52,9 +52,11 @@ class PostController extends AbstractController
     }
 
     #[Route('/{_locale}/post/{id}', methods: ['GET'], name: 'posts.show')]
-    public function show($id): Response
+    public function show(Post $post): Response
     {
-        return $this->render('post/show.html.twig');
+        return $this->render('post/show.html.twig', [
+            'post' => $post
+        ]);
     }
 
     #[Route('/{_locale}/post/{id}/edit', methods: ['GET', 'POST'], name: 'posts.edit')]
