@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f79150dd5a9c3fd4569cd75063c65947",
+    "content-hash": "015b56eb545b60d59733bcd3ec0b5ab5",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -1885,16 +1885,16 @@
         },
         {
             "name": "knplabs/knp-paginator-bundle",
-            "version": "v6.2.0",
+            "version": "v6.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/KnpLabs/KnpPaginatorBundle.git",
-                "reference": "8da698f0856b1d9c9c02dcacbfc382c5c9440c80"
+                "reference": "813c1b25b0593fdf3adebf85d9bc0e889db3808a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/KnpLabs/KnpPaginatorBundle/zipball/8da698f0856b1d9c9c02dcacbfc382c5c9440c80",
-                "reference": "8da698f0856b1d9c9c02dcacbfc382c5c9440c80",
+                "url": "https://api.github.com/repos/KnpLabs/KnpPaginatorBundle/zipball/813c1b25b0593fdf3adebf85d9bc0e889db3808a",
+                "reference": "813c1b25b0593fdf3adebf85d9bc0e889db3808a",
                 "shasum": ""
             },
             "require": {
@@ -1953,9 +1953,9 @@
             ],
             "support": {
                 "issues": "https://github.com/KnpLabs/KnpPaginatorBundle/issues",
-                "source": "https://github.com/KnpLabs/KnpPaginatorBundle/tree/v6.2.0"
+                "source": "https://github.com/KnpLabs/KnpPaginatorBundle/tree/v6.1.0"
             },
-            "time": "2023-03-25T06:51:40+00:00"
+            "time": "2023-01-14T16:58:13+00:00"
         },
         {
             "name": "lcobucci/clock",

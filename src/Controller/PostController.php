@@ -15,9 +15,9 @@ use Doctrine\Persistence\ManagerRegistry;
 class PostController extends AbstractController
 {
     #[Route('/{_locale}', methods: ['GET'], name: 'posts.index')]
-    public function index(ManagerRegistry $doctrine, string $_locale = 'en'): Response
+    public function index(Request $request, ManagerRegistry $doctrine, string $_locale = 'en'): Response
     {
-        $posts = $doctrine->getRepository(Post::class)->findAll();
+        $posts = $doctrine->getRepository(Post::class)->findAllPosts($request->query->getInt('page', 1));
         return $this->render('post/index.html.twig', [
             'posts' => $posts
         ]);
