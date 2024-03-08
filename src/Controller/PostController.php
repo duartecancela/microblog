@@ -8,7 +8,6 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Post;
 use App\Form\PostType;
 use Symfony\Component\HttpFoundation\Request;
-use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -16,19 +15,12 @@ use Doctrine\Persistence\ManagerRegistry;
 class PostController extends AbstractController
 {
     #[Route('/{_locale}', methods: ['GET'], name: 'posts.index')]
-    public function index(ManagerRegistry $doctrine,string $_locale = 'en'): Response
+    public function index(ManagerRegistry $doctrine, string $_locale = 'en'): Response
     {
-        // $entityManager = $doctrine->getManager();
-        // $user = $entityManager->getRepository(User::class)->find(1);
-        // $entityManager->remove($user);
-        // $entityManager->flush();
-        // return new Response($user->getUser()->getEmail());
-        // $entityManager = $doctrine->getManager();
-        // $post = $entityManager->getRepository(Post::class)->find(1);
-        // return new Response($post->getUser()->getEmail());
-        // $user = $this->getUser();
-        // return new Response($user->getPosts()[0]->getTitle());
-        return $this->render('post/index.html.twig');
+        $posts = $doctrine->getRepository(Post::class)->findAll();
+        return $this->render('post/index.html.twig', [
+            'posts' => $posts
+        ]);
     }
 
     #[Route('/{_locale}/post/new', methods: ['GET', 'POST'], name: 'posts.new')]
