@@ -60,17 +60,19 @@ class PostController extends AbstractController
     }
 
     #[Route('/{_locale}/post/{id}/edit', methods: ['GET', 'POST'], name: 'posts.edit')]
-    public function edit(Request $request): Response
+    public function edit(Post $post, Request $request, ManagerRegistry $doctrine): Response
     {
         // return $this->redirectToRoute('posts.index');
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        $post = new Post();
         $form = $this->createForm(PostType::class, $post);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             // $form->getData() holds the submitted values
             // but, the original `$task` variable has also been updated
             $post = $form->getData();
+            $entityManager = $doctrine->getManager();
+            $entityManager->persist($post);
+            $entityManager->flush();
              // ... perform some action, such as saving the task to the database
              return $this->redirectToRoute('posts.index');
         }
