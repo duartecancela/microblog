@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Post;
+use App\Entity\User;
 use App\Form\PostType;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
@@ -92,10 +93,12 @@ class PostController extends AbstractController
     }
 
     #[Route('/{_locale}/posts/user/{id}', methods: ['GET'], name: 'posts.user')]
-    public function user($id): Response
+    public function user(Request $request, ManagerRegistry $doctrine,$id): Response
     {
-        // return new Response($id);
-        return $this->render('post/index.html.twig');
+        $posts = $doctrine->getRepository(Post::class)->findAllUserPosts($request->query->getInt('page', 1), $id);
+        return $this->render('post/index.html.twig', [
+            'posts' => $posts,
+        ]);
     }
 
     #[Route('/{_locale}/toggleFollow/{user}', methods: ['GET'], name: 'toggleFollow')]
