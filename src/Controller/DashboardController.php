@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\SecurityBundle\Security;
 
 class DashboardController extends AbstractController
 {
@@ -23,7 +24,7 @@ class DashboardController extends AbstractController
     }
 
     #[Route('/dashboard/profile', name: 'app_profile')]
-    public function profile(Request $request, EntityManagerInterface $entityManager): Response
+    public function profile(Request $request, EntityManagerInterface $entityManager, Security $security): Response
     {
         // change image
         $image = new Image();
@@ -49,12 +50,14 @@ class DashboardController extends AbstractController
         }
 
         // change user email, name
-        $user = $this->getUser();
+        // $user = $this->getUser();
         $userForm = $this->createForm(UserFormType::class, $user);
         $userForm->handleRequest($request);
 
         if ($userForm->isSubmitted() && $userForm->isValid()) {
-            $user = $userForm->getData();
+            // $user = $userForm->getData();
+            $entityManager->persist($user);
+            $entityManager->flush();
             $this->addFlash(
                 'status-profile-information',
                 'user-updated'
@@ -80,8 +83,12 @@ class DashboardController extends AbstractController
         $deleteAccountForm->handleRequest($request);
         
         if ($deleteAccountForm->isSubmitted() && $deleteAccountForm->isValid()) {
-            $user = $deleteAccountForm->getData();
-            return $this->redirectToRoute('app_profile');
+            // $user = $deleteAccountForm->getData();
+            $security->logout(false);
+            $entityManager->remove($user);
+            $entityManager->flush();
+            $request->getSession()->invalidate();
+            return $this->redirectToRoute('posts.index');
         }
 
         return $this->render('dashboard/edit.html.twig', [
