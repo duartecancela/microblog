@@ -70,7 +70,9 @@ class DashboardController extends AbstractController
         $passwordForm->handleRequest($request);
 
         if ($passwordForm->isSubmitted() && $passwordForm->isValid()) {
-            $user = $passwordForm->getData();
+            // $user = $passwordForm->getData();
+            $entityManager->persist($user);
+            $entityManager->flush();
             $this->addFlash(
                 'status-password',
                 'password-changed'
