@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Doctrine\ORM\EntityManagerInterface;
 
 class DashboardController extends AbstractController
 {
@@ -22,14 +23,24 @@ class DashboardController extends AbstractController
     }
 
     #[Route('/dashboard/profile', name: 'app_profile')]
-    public function profile(Request $request): Response
+    public function profile(Request $request, EntityManagerInterface $entityManager): Response
     {
         // change image
         $image = new Image();
         $imageForm = $this->createForm(ImageFormType::class, $image);
         $imageForm->handleRequest($request);
+        $user = $this->getUser();
         if ($imageForm->isSubmitted() && $imageForm->isValid()) {
-            $image = $imageForm->getData();
+            // $image = $imageForm->getData();
+            $image->setPath($imageForm->get('imageFile')->getData()->getClientOriginalName());
+            if ($user->getImage()) {
+                $oldImage = $entityManager->getRepository(Image::class)->find($user->getImage()->getId());
+                $entityManager->remove($oldImage);
+            }
+            $user->setImage($image);
+            $entityManager->persist($image);
+            $entityManager->persist($user);
+            $entityManager->flush();
             $this->addFlash(
                 'status-image',
                 'image-updated'
